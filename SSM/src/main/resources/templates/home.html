@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Slack Scheduled Messenger</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div style="display: flex; flex-direction: column; align-items: center;">
+		<h2>Jobs</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Message Text</th>
+					<th>Time</th>
+					<th>Channel</th>
+					<th>Status</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="job : ${jobsList}">
+					<td th:text="${job.messageText}">Message is ...</td>
+					<td th:text="${#dates.format(job.time, 'dd-MM-yyyy	HH:mm:ss')}">Time
+						is ...</td>
+					<td th:text="${job.channel}">Channel is ...</td>
+					<td th:text="${job.status}">Status is ...</td>
+					<td><a th:href="@{/delete_job(id=${job.id})}"><button>X</button></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<button id="open-button" class="open-button">Add new job</button>
+
+	<div class="modal-overlay" id="modal-overlay"></div>
+
+	<div class="modal" id="modal">
+		<div class="modal-contents">
+			<h1>Add New Job</h1>
+			<div id="labelsAndInputs" class="labelsAndInputs">
+				<div class="input">
+					<label for="message" style="vertical-align: middle;">Message</label>
+					<textarea id="message" placeholder="Message to send..."
+						style="vertical-align: middle;"></textarea>
+					<span id="messageError" class="messageError">Message can't
+						be empty</span>
+				</div>
+				<div class="input">
+					<label for="time">Time</label> <input id="time"
+						type="datetime-local"></input> <span id="timeError"
+						class="timeError">Time has to be greater than now</span>
+				</div>
+			</div>
+		</div>
+		<div id="buttons" class="buttons">
+			<button id="save-button" class="save-button" onClick="addJob()">Save</button>
+			<button id="close-button" class="close-button">Cancel</button>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>
